@@ -1,7 +1,7 @@
 package whois
 
 import (
-	"log"
+	_ "log"
 	"net"
 	"os/exec"
 	"time"
