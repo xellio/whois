@@ -9,7 +9,7 @@ import (
 
 type Result struct {
 	Ip         net.IP
-	RawOutput  []byte
+	Raw        []byte
 	Output     map[string]string
 	GatherTime time.Duration
 }
@@ -25,7 +25,7 @@ func Query(ip net.IP) (*Result, error) {
 		return r, err
 	}
 	r.GatherTime = time.Since(start)
-	r.RawOutput = out
+	r.Raw = out
 	r.Output = make(map[string]string)
 
 	singleLines := strings.Split(string(out), "\n")
