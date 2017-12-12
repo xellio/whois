@@ -13,7 +13,7 @@ import (
 type Result struct {
 	Ip         net.IP
 	Raw        []byte
-	Output     map[string]string
+	Output     map[string][]string
 	GatherTime time.Duration
 }
 
@@ -35,7 +35,7 @@ func Query(ip net.IP, args ...string) (*Result, error) {
 
 	r.GatherTime = time.Since(start)
 	r.Raw = out
-	r.Output = make(map[string]string)
+	r.Output = make(map[string][]string)
 
 	singleLines := strings.Split(string(out), "\n")
 	for _, line := range singleLines {
@@ -44,7 +44,7 @@ func Query(ip net.IP, args ...string) (*Result, error) {
 		}
 		lineParts := strings.Split(line, ": ")
 		if len(lineParts) == 2 {
-			r.Output[lineParts[0]] = strings.TrimSpace(lineParts[1])
+			r.Output[lineParts[0]] = append(r.Output[lineParts[0]], strings.TrimSpace(lineParts[1]))
 		}
 	}
 

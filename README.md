@@ -15,10 +15,14 @@ func main() {
 	res, err := whois.Query(ip)
 	if err != nil {
 		log.Println(err)
+		return
 	}
 
 	for key, value := range res.Output {
-		log.Println(key, value)
+		log.Println(key)
+		for _, val := range value {
+			log.Println("\t", val)
+		}
 	}
 }
 ```
