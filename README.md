@@ -1,5 +1,7 @@
 # whois - a go wrapper for whois command
 
+[Documentation](https://godoc.org/github.com/xellio/whois)
+
 ### Example
 ```
 import (
