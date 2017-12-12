@@ -29,11 +29,13 @@ func Query(ip net.IP) (*Result, error) {
 	r.Output = make(map[string]string)
 
 	singleLines := strings.Split(string(out), "\n")
-
 	for _, line := range singleLines {
-		lineParts := strings.Split(line, ":")
+		if strings.HasPrefix(line, "#") {
+			continue
+		}
+		lineParts := strings.Split(line, ": ")
 		if len(lineParts) == 2 {
-			r.Output[lineParts[0]] = lineParts[1]
+			r.Output[lineParts[0]] = strings.TrimSpace(lineParts[1])
 		}
 	}
 
