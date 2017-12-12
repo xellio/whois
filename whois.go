@@ -20,16 +20,19 @@ type Result struct {
 //
 // Query whois command for given net.IP
 //
-func Query(ip net.IP) (*Result, error) {
+func Query(ip net.IP, args ...string) (*Result, error) {
 	r := &Result{
 		Ip: ip,
 	}
+	args = append([]string{ip.String()}, args...)
+
 	start := time.Now()
 
-	out, err := exec.Command("whois", ip.String()).Output()
+	out, err := exec.Command("whois", args...).Output()
 	if err != nil {
 		return r, err
 	}
+
 	r.GatherTime = time.Since(start)
 	r.Raw = out
 	r.Output = make(map[string]string)
