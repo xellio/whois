@@ -7,6 +7,9 @@ import (
 	"time"
 )
 
+//
+// Result struct
+//
 type Result struct {
 	Ip         net.IP
 	Raw        []byte
@@ -14,6 +17,9 @@ type Result struct {
 	GatherTime time.Duration
 }
 
+//
+// Query whois command for given net.IP
+//
 func Query(ip net.IP) (*Result, error) {
 	r := &Result{
 		Ip: ip,
