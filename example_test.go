@@ -10,7 +10,7 @@ import (
 )
 
 //
-// A basic example of usage
+// An example of using the Query function
 //
 func ExampleQuery() {
 	ip := net.ParseIP("8.8.8.8")
