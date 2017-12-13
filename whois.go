@@ -37,8 +37,15 @@ func QueryHost(host string, args ...string) (r *Result, err error) {
 	r = &Result{
 		Host: host,
 	}
-	args = append([]string{host}, args...)
-	err = r.execute(args)
+	arguments := append([]string{host}, args...)
+
+	if err = r.execute(arguments); err != nil {
+		hp := strings.Split(host, ".")
+		if len(hp) > 2 {
+			return QueryHost(strings.Join(hp[1:], "."), args...)
+		}
+	}
+
 	return
 }
 
