@@ -2,6 +2,7 @@ package whois
 
 import (
 	"net"
+	"net/url"
 	"os/exec"
 	"strings"
 	"time"
@@ -12,25 +13,55 @@ import (
 //
 type Result struct {
 	Ip         net.IP
+	Host       string
 	Raw        []byte
 	Output     map[string][]string
 	GatherTime time.Duration
 }
 
 //
-// Query whois command for given net.IP
+// Query whois data for given url
 //
-func Query(ip net.IP, args ...string) (*Result, error) {
-	r := &Result{
+func Query(urlToQuery string, args ...string) (r *Result, err error) {
+	u, err := url.Parse(urlToQuery)
+	if err != nil {
+		return nil, err
+	}
+	return QueryHost(u.Host, args...)
+}
+
+//
+// Query whois data for given host
+//
+func QueryHost(host string, args ...string) (r *Result, err error) {
+	r = &Result{
+		Host: host,
+	}
+	args = append([]string{host}, args...)
+	err = r.execute(args)
+	return
+}
+
+//
+// Query whois data for given net.IP
+//
+func QueryIp(ip net.IP, args ...string) (r *Result, err error) {
+	r = &Result{
 		Ip: ip,
 	}
 	args = append([]string{ip.String()}, args...)
+	err = r.execute(args)
+	return
+}
 
+//
+// Execute the whois command using the given args
+//
+func (r *Result) execute(args []string) error {
 	start := time.Now()
-
 	out, err := exec.Command("whois", args...).Output()
 	if err != nil {
-		return r, err
+		return err
 	}
 
 	r.GatherTime = time.Since(start)
@@ -39,14 +70,15 @@ func Query(ip net.IP, args ...string) (*Result, error) {
 
 	singleLines := strings.Split(string(out), "\n")
 	for _, line := range singleLines {
-		if strings.HasPrefix(line, "#") || strings.HasPrefix(line, "%") {
+		if strings.HasPrefix(line, "#") || strings.HasPrefix(line, "%") || strings.HasPrefix(line, ">") {
 			continue
 		}
 		lineParts := strings.Split(line, ": ")
 		if len(lineParts) == 2 {
-			r.Output[lineParts[0]] = append(r.Output[lineParts[0]], strings.TrimSpace(lineParts[1]))
+			tk := strings.TrimSpace(lineParts[0])
+			r.Output[tk] = append(r.Output[tk], strings.TrimSpace(lineParts[1]))
 		}
 	}
 
-	return r, nil
+	return nil
 }
