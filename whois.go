@@ -71,10 +71,10 @@ func (r *Result) execute(args []string) error {
 	}
 
 	start := time.Now()
-	out, err := exec.Command(path, args...).Output()
-	if err != nil {
-		return err
-	}
+	out, _ := exec.Command(path, args...).Output()
+	//if err != nil {
+	//	return err
+	//}
 
 	r.GatherTime = time.Since(start)
 	r.Raw = out
