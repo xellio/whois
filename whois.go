@@ -38,7 +38,6 @@ func QueryHost(host string, args ...string) (r *Result, err error) {
 		Host: host,
 	}
 	arguments := append([]string{host}, args...)
-
 	if err = r.execute(arguments); err != nil {
 		hp := strings.Split(host, ".")
 		if len(hp) > 2 {
@@ -65,8 +64,14 @@ func QueryIp(ip net.IP, args ...string) (r *Result, err error) {
 // Execute the whois command using the given args
 //
 func (r *Result) execute(args []string) error {
+
+	path, err := exec.LookPath("whois")
+	if err != nil {
+		return err
+	}
+
 	start := time.Now()
-	out, err := exec.Command("whois", args...).Output()
+	out, err := exec.Command(path, args...).Output()
 	if err != nil {
 		return err
 	}
