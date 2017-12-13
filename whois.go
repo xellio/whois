@@ -39,7 +39,7 @@ func Query(ip net.IP, args ...string) (*Result, error) {
 
 	singleLines := strings.Split(string(out), "\n")
 	for _, line := range singleLines {
-		if strings.HasPrefix(line, "#") {
+		if strings.HasPrefix(line, "#") || strings.HasPrefix(line, "%") {
 			continue
 		}
 		lineParts := strings.Split(line, ": ")
