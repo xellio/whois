@@ -9,6 +9,9 @@ import (
 	"github.com/xellio/whois"
 )
 
+//
+// A basic example of usage
+//
 func ExampleQuery() {
 	ip := net.ParseIP("8.8.8.8")
 	res, err := whois.Query(ip)
