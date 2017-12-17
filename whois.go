@@ -1,6 +1,7 @@
 package whois
 
 import (
+	"encoding/json"
 	"net"
 	"net/url"
 	"os/exec"
@@ -95,4 +96,17 @@ func (r *Result) execute(args []string) error {
 	}
 
 	return nil
+}
+
+//
+// Return r,Output parsed as JSON
+//
+func (r *Result) Json() (string, error) {
+
+	data, err := json.Marshal(r.Output)
+	if err != nil {
+		return "", err
+	}
+
+	return string(data), nil
 }
