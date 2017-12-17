@@ -101,12 +101,18 @@ func (r *Result) execute(args []string) error {
 //
 // Return r,Output parsed as JSON
 //
-func (r *Result) Json() (string, error) {
+func (r *Result) Json() (data []byte, err error) {
+	data, err = json.Marshal(r.Output)
+	return
+}
 
-	data, err := json.Marshal(r.Output)
+//
+// Return r.Outout as string (json)
+//
+func (r *Result) String() string {
+	data, err := r.Json()
 	if err != nil {
-		return "", err
+		return ""
 	}
-
-	return string(data), nil
+	return string(data)
 }
