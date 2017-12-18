@@ -5,6 +5,7 @@ import (
 	"net"
 	"net/url"
 	"os/exec"
+	"regexp"
 	"strings"
 	"time"
 )
@@ -84,8 +85,10 @@ func (r *Result) execute(args []string) error {
 	r.Output = make(map[string][]string)
 
 	singleLines := strings.Split(string(out), "\n")
+
+	re := regexp.MustCompile("^[#%>]+")
 	for _, line := range singleLines {
-		if strings.HasPrefix(line, "#") || strings.HasPrefix(line, "%") || strings.HasPrefix(line, ">") {
+		if re.MatchString(line) {
 			continue
 		}
 		lineParts := strings.Split(line, ": ")
