@@ -2,6 +2,7 @@ package whois
 
 import (
 	"encoding/json"
+	"errors"
 	"net"
 	"net/url"
 	"os/exec"
@@ -84,6 +85,11 @@ func (r *Result) execute(args []string) error {
 	r.Raw = out
 	r.Output = make(map[string][]string)
 
+	_, err = isValidResponse(out)
+	if err != nil {
+		return err
+	}
+
 	singleLines := strings.Split(string(out), "\n")
 
 	re := regexp.MustCompile("^[#%>]+")
@@ -99,6 +105,33 @@ func (r *Result) execute(args []string) error {
 	}
 
 	return nil
+}
+
+//
+// Sometimes a failing whois looks like a working one
+// In some cases we can find a trigger in the result (like status)
+// Example:
+//    URL: 1.f.ix.de/scale/geometry/246/q75/imgs/18/2/3/3/7/1/5/6/Volkswagen-Werk-in-Brasilien-1953-118a4f16e7756311.jpeg
+// 	  Host: 1.f.ix.de
+//    Result:
+//    ```
+//	  Domain: 1.f.ix.de
+//    Status: invalid
+//
+//    ```
+// Triggers we use right now:
+// 		- a valid whois response should have a minimum of 5 lines
+//		I will add more triggers as they appear or become nescessary (like checking the status field if present)
+//
+func isValidResponse(response []byte) (valid bool, err error) {
+
+	singleLines := strings.Split(string(response), "\n")
+	if len(singleLines) < 5 {
+		err = errors.New("Invalid response detected. We assume that a valid whois response has at minimum 5 lines.")
+		return
+	}
+	valid = true
+	return
 }
 
 //
