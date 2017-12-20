@@ -34,7 +34,7 @@ func Query(urlToQuery string, args ...string) (r *Result, err error) {
 }
 
 //
-// Query whois data for given host
+// QueryHost queries whois data for given host
 //
 func QueryHost(host string, args ...string) (r *Result, err error) {
 	r = &Result{
@@ -52,7 +52,7 @@ func QueryHost(host string, args ...string) (r *Result, err error) {
 }
 
 //
-// Query whois data for given net.IP
+// QueryIp queries whois data for given net.IP
 //
 func QueryIp(ip net.IP, args ...string) (r *Result, err error) {
 	r = &Result{
@@ -135,7 +135,7 @@ func isValidResponse(response []byte) (valid bool, err error) {
 }
 
 //
-// Return r,Output parsed as JSON
+// Json returns r,Output parsed as JSON
 //
 func (r *Result) Json() (data []byte, err error) {
 	data, err = json.Marshal(r.Output)
@@ -143,7 +143,7 @@ func (r *Result) Json() (data []byte, err error) {
 }
 
 //
-// Return r.Outout as string (json)
+// String return r.Outout as string (json)
 //
 func (r *Result) String() string {
 	data, err := r.Json()

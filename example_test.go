@@ -9,7 +9,7 @@ import (
 )
 
 //
-// An example of using the Query function
+// ExampleQuery - An example of using the Query function
 //
 func ExampleQuery() {
 	url := "http://github.com/xellio/whois"
@@ -24,7 +24,7 @@ func ExampleQuery() {
 }
 
 //
-// An example of using the QueryHost function
+// ExampleQueryHost - An example of using the QueryHost function
 //
 func ExampleQueryHost() {
 	host := "golang.org"
@@ -39,7 +39,7 @@ func ExampleQueryHost() {
 }
 
 //
-// An example of using the QueryIp function
+// ExampleQueryIp - An example of using the QueryIp function
 //
 func ExampleQueryIp() {
 	ip := net.ParseIP("8.8.8.8")
