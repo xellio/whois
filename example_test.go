@@ -41,9 +41,9 @@ func ExampleQueryHost() {
 //
 // ExampleQueryIp - An example of using the QueryIp function
 //
-func ExampleQueryIp() {
+func ExampleQueryIP() {
 	ip := net.ParseIP("8.8.8.8")
-	res, err := whois.QueryIp(ip)
+	res, err := whois.QueryIP(ip)
 	if err != nil {
 		fmt.Println(err)
 		return

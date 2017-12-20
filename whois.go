@@ -15,7 +15,7 @@ import (
 // Result struct
 //
 type Result struct {
-	Ip         net.IP
+	IP         net.IP
 	Host       string
 	Raw        []byte
 	Output     map[string][]string
@@ -52,11 +52,11 @@ func QueryHost(host string, args ...string) (r *Result, err error) {
 }
 
 //
-// QueryIp queries whois data for given net.IP
+// QueryIP queries whois data for given net.IP
 //
-func QueryIp(ip net.IP, args ...string) (r *Result, err error) {
+func QueryIP(ip net.IP, args ...string) (r *Result, err error) {
 	r = &Result{
-		Ip: ip,
+		IP: ip,
 	}
 	args = append([]string{ip.String()}, args...)
 	err = r.execute(args)
@@ -127,7 +127,7 @@ func isValidResponse(response []byte) (valid bool, err error) {
 
 	singleLines := strings.Split(string(response), "\n")
 	if len(singleLines) < 5 {
-		err = errors.New("Invalid response detected. We assume that a valid whois response has at minimum 5 lines.")
+		err = errors.New("invalid response detected. We assume that a valid whois response has at minimum 5 lines")
 		return
 	}
 	valid = true
@@ -135,9 +135,9 @@ func isValidResponse(response []byte) (valid bool, err error) {
 }
 
 //
-// Json returns r,Output parsed as JSON
+// JSON returns r,Output parsed as JSON
 //
-func (r *Result) Json() (data []byte, err error) {
+func (r *Result) JSON() (data []byte, err error) {
 	data, err = json.Marshal(r.Output)
 	return
 }
@@ -146,7 +146,7 @@ func (r *Result) Json() (data []byte, err error) {
 // String return r.Outout as string (json)
 //
 func (r *Result) String() string {
-	data, err := r.Json()
+	data, err := r.JSON()
 	if err != nil {
 		return ""
 	}
