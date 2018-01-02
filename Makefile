@@ -5,7 +5,7 @@ vendor:
 	glide install
 
 test:
-	$(GO) test -race $$($(GO) list ./... | grep -v "/vendor/")
+	$(GO) test -race $$($(GO) list ./... | grep -v "/vendor/" | cut -c 19-)
 
 $(GOPATH)/bin/goconst:
 	$(GO) get github.com/jgautheron/goconst/cmd/goconst
