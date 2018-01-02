@@ -5,7 +5,7 @@ vendor:
 	glide install
 
 test:
-	$(GO) test -race $$($(GO) list ./... | grep -v "/vendor/" | cut -c 19-)
+	$(GO) test -race $$($(GO) list ./... | grep -v "/vendor/" | cut -c 26-)
 
 $(GOPATH)/bin/goconst:
 	$(GO) get github.com/jgautheron/goconst/cmd/goconst
@@ -30,7 +30,7 @@ lint: \
 	$(GOPATH)/bin/unconvert \
 	$(GOPATH)/bin/staticcheck \
 	$(GOPATH)/bin/gas
-		$(GOLINT) --deadline 30s 
+		$(GOLINT) --deadline 30s $$(go list ./... | grep -v "/vendor/" | cut -c 19-)
 
 $(GOPATH)/bin/aligncheck:
 	$(GO) get github.com/opennota/check/cmd/aligncheck
