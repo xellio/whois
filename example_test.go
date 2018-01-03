@@ -1,3 +1,5 @@
+// !build +testing
+
 package whois_test
 
 import (
